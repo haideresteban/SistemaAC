@@ -74,6 +74,7 @@ class Estudiantes {
         $.post(
             action,
             { id }, (response) => {
+                console.log(response);
                 if (funcion === 1) {
                     idEstudiante = response[0].id;
                     document.getElementById("Codigo").value = response[0].codigo;
@@ -84,11 +85,19 @@ class Estudiantes {
                     document.getElementById("Email").value = response[0].email;
                     document.getElementById("Telefono").value = response[0].telefono;
                     document.getElementById("Direccion").value = response[0].direccion;
-                    document.getElementById("Estado").value = response[0].estado;
+                    document.getElementById("Estado").checked = response[0].estado;
                 }
                 var action = 'Estudinates/guardarEstudiante';
                 this.editarEstudiante(response, funcion, action)
             });
+    }
 
+    editarEstudiante(response, funcion, action) {
+        $post(
+            action,
+            { response, funcion },
+            (response) => {
+                console.log(response);
+            });
     }
 }

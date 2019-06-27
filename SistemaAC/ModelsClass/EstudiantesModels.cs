@@ -13,26 +13,50 @@ namespace SistemaAC.ModelsClass
         private ApplicationDbContext context;
         private List<IdentityError> identityError;
         private string code = "", des = "";
+        private Boolean estados;
         public EstudiantesModels(ApplicationDbContext context)
         {
             this.context = context;
             identityError = new List<IdentityError>();
 
         }
-        public List<IdentityError> guardarEstudiante(int id, string codigo, string nombre, string apellido, DateTime fecha, string documento, string email, string telefono, string direccion, Boolean estado, int funcion)
+        public List<Estudiante> getEstudiante(int id)
         {
+            return context.Estudiante.Where(c => c.ID == id).ToList();
+
+        }
+        public List<IdentityError> guardarEstudiante(List<Estudiante> response, int funcion)
+        {
+            switch (funcion)
+            {
+                case 0:
+                    if (response[0].Estado)
+                    {
+                        estados = false;
+                    }
+                    else
+                    {
+                        estados = true;
+                    }
+                    break;
+                case 1:
+                    //para registrar o editar un estduiante
+                    estados = response[0].Estado;                
+                    break;
+            }
+
             var estudiante = new Estudiante
             {
-                ID = id,
-                Codigo = codigo,
-                Apellidos = apellido,
-                Nombres = nombre,
-                FechaNacimiento = fecha,
-                Documento = documento,
-                Email = email,
-                Telefono = telefono,
-                Direccion = direccion,
-                Estado = estado
+                ID = response[0].ID,
+                Codigo =response[0].Codigo,
+                Apellidos = response[0].Apellidos,
+                Nombres = response[0].Nombres,
+                FechaNacimiento = response[0].FechaNacimiento,
+                Documento = response[0].Documento,
+                Email = response[0].Email,
+                Telefono = response[0].Telefono,
+                Direccion = response[0].Direccion,
+                Estado = estados
             };
             try
             {

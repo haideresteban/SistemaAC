@@ -29,9 +29,9 @@ namespace SistemaAC.Controllers
             return View(await _context.Estudiante.ToListAsync());
         }
 
-        public List<IdentityError> guardarEstudiante(int id, string codigo, string nombre, string apellido, DateTime fecha, string documento, string email, string telefono, string direccion, Boolean estado, int funcion)
+        public List<IdentityError> guardarEstudiante(List<Estudiante> response, int funcion)
         {
-            return estudiante.guardarEstudiante(id, codigo, nombre, apellido, fecha, documento, email, telefono, direccion, estado, funcion);
+            return estudiante.guardarEstudiante(response, funcion);
 
         }
         public List<object[]> filtrarEstudiantes(int numPagina, string valor, string order)
@@ -39,6 +39,12 @@ namespace SistemaAC.Controllers
             return estudiante.filtrarEstudiantes(numPagina, valor, order);
 
         }
+        public List<Estudiante> getEstudiante(int id)
+        {
+            return estudiante.getEstudiante(id);
+
+        }
+       
         // GET: Estudiantes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
