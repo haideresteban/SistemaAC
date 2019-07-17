@@ -107,8 +107,8 @@ class Cursos {
             url: action,
             data: { valor, numPagina, order },
             success: (response) => {
-                $("#resultSearch").html(response[0]);
-                $("#paginado").html(response[1]);
+                $("#resultSearch").html(response[0][0]);
+                $("#paginado").html(response[0][1]);
             }
         });
     }

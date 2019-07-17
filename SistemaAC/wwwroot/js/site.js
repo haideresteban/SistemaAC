@@ -202,6 +202,7 @@ $('#modalAS').on('shown.bs.modal', () => {
  CODIGO DE CATEGORIAS
  */
 var idCategoria, funcion = 0, idCurso;
+var idEstudiante = 0;
 
 var agregarCategoria = () => {
     var nombre = document.getElementById("Nombre").value;
@@ -300,10 +301,9 @@ var restablecer = () => {
  */
 var estudiante = new Estudiantes();
 var agregarEstudiante = () => {
-    if (funcion === 0) {
-        var action = 'Estudiantes/guardarEstudiante';
-    }
-    var id = 0;
+
+    var action = 'Estudiantes/guardarEstudiante';
+
     var codigo = document.getElementById("Codigo").value;
     var nombre = document.getElementById("Nombre").value;
     var apellido = document.getElementById("Apellidos").value;
@@ -313,15 +313,31 @@ var agregarEstudiante = () => {
     var telefono = document.getElementById("Telefono").value;
     var direccion = document.getElementById("Direccion").value;
     var estado = document.getElementById("Estado").checked;
-    estudiante.guardarEstudiante(id, funcion, action, codigo, nombre, apellido, fecha, documento, email, telefono, direccion, estado);
+    estudiante.guardarEstudiante(idEstudiante, funcion, action, codigo, nombre, apellido, fecha, documento, email, telefono, direccion, estado);
+    idEstudiante = 0;
 };
 var filtarEstudiantes = (numPagina, order) => {
     var valor = document.getElementById("filtrar").value;
     var action = 'Estudiantes/filtrarEstudiantes';
     estudiante.filtarEstudiantes(numPagina, valor, order, action);
 };
-var editarEstudiante = (id, funcion) => {
+var editarEstudiante = (id, fun) => {
+    idEstudiante = id;
+    funcion = fun;
     var action = 'Estudiantes/getEstudiante';
     estudiante.getEstudiante(id, funcion, action);
+};
+
+var deleteEstudiante = (id) => {
+    idEstudiante = id;
+};
+var deleteEstudiantes = () => {
+    var action = 'Estudiantes/deleteEstudiante';
+    estudiante.deleteEstudiantes(idEstudiante, action);
+    idEstudiante = 0;
 
 };
+var restablecerEstudiantes = () => {
+    estudiante.restablecer();
+
+}

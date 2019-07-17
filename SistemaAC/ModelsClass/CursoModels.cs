@@ -100,6 +100,10 @@ namespace SistemaAC.ModelsClass
                     break;
             }
             numRegistros = cursos.Count;
+            if ((numRegistros % reg_por_pagina) > 0)
+            {
+                numRegistros += 1;
+            }
             inicio = (numPagina - 1) * reg_por_pagina;
             can_paginas = (numRegistros / reg_por_pagina);
             //para filtrar por parametro escrito en el formulario
@@ -149,7 +153,7 @@ namespace SistemaAC.ModelsClass
                 {
                     paginador += "<strong class='btn btn-success'>" + numPagina + ".de." + can_paginas + "</strong>";
                 }
-                if (numPagina<can_paginas)
+                if (numPagina < can_paginas)
                 {
                     pagina = numPagina + 1;
                     paginador += "<a class='btn btn-default' onclick='filtrarCurso(" + pagina + ',' + '"' + order + '"' + ")'> >> </a>" +

@@ -41,14 +41,14 @@ namespace SistemaAC.ModelsClass
                     break;
                 case 1:
                     //para registrar o editar un estduiante
-                    estados = response[0].Estado;                
+                    estados = response[0].Estado;
                     break;
             }
 
             var estudiante = new Estudiante
             {
                 ID = response[0].ID,
-                Codigo =response[0].Codigo,
+                Codigo = response[0].Codigo,
                 Apellidos = response[0].Apellidos,
                 Nombres = response[0].Nombres,
                 FechaNacimiento = response[0].FechaNacimiento,
@@ -81,7 +81,7 @@ namespace SistemaAC.ModelsClass
 
         public List<object[]> filtrarEstudiantes(int numPagina, string valor, string order)
         {
-            int cant, numRegistros = 0, inicio = 0, reg_por_pagina = 6;
+            int cant, numRegistros = 0, inicio = 0, reg_por_pagina = 1;
             int can_paginas, pagina = 0, count = 1;
             string dataFilter = "", paginador = "", Estado = null;
             List<object[]> data = new List<object[]>();
@@ -91,6 +91,10 @@ namespace SistemaAC.ModelsClass
             // solo va a validar si viene nombre en el parametro si se quiere que valide por todos se debe agregar en el index y || en la funcion landa
             estudiantes = context.Estudiante.OrderBy(p => p.Nombres).ToList();
             numRegistros = estudiantes.Count;
+            if ((numRegistros % reg_por_pagina) > 0)
+            {
+                numRegistros += 1;
+            }
             inicio = (numPagina - 1) * reg_por_pagina;
             can_paginas = (numRegistros / reg_por_pagina);
             if (valor == "null")
@@ -119,13 +123,66 @@ namespace SistemaAC.ModelsClass
                    "<a data-toggle='modal' data-target='#modalAS' onclick='editarEstudiante(" + item.ID + ',' + 1 + ")'  class='btn btn-success'>Edit</a>" +
                    "</td>" +
                    "<td>" +
-                   "<a data-toggle='modal' data-target='#modalCS' onclick='editarEstudiante(" + item.ID + ',' + 1 + ")'  class='btn btn-danger'>Delete</a>" +
+                   "<a data-toggle='modal' data-target='#modalDeleteAS' onclick='deleteEstudiante(" + item.ID + ")'  class='btn btn-danger'>Delete</a>" +
                    "</td>" +
                "</tr>";
+            }
+            if (valor == "null")
+            {
+                if (numPagina > 1)
+                {
+                    pagina = numPagina - 1;
+                    paginador += " <a class='btn btn-default' onclick='filtarEstudiantes(" + 1 + ',' + '"' + order + '"' + ")'> << </a>" +
+                    " <a class='btn btn-default' onclick='filtarEstudiantes(" + pagina + ',' + '"' + order + '"' + ")'> < </a>";
+
+                }
+                if (1 < can_paginas)
+                {
+                    for (int i = numPagina; i <= can_paginas; i++)
+                    {
+                        paginador += " <strong class='btn btn-success' onclick='filtarEstudiantes(" + i + ',' + '"' + order + '"' + ")'>" + i + "</strong>";
+                        if (count == 5)
+                        {
+                            break;
+                        }
+                        count++;
+                    }
+                }
+                if (numPagina < can_paginas)
+                {
+                    pagina = numPagina + 1;
+                    paginador += " <a class='btn btn-default' onclick='filtarEstudiantes(" + pagina + ',' + '"' + order + '"' + ")'>></a>" +
+                        " <a class='btn btn-default' onclick='filtarEstudiantes(" + can_paginas + ',' + '"' + order + '"' + ")'> >> </a> ";
+                }
             }
             object[] dataObj = { dataFilter, paginador };
             data.Add(dataObj);
             return data;
+        }
+
+        internal List<IdentityError> deleteEstudiante(int id)
+        {
+            var estudiante = context.Estudiante.SingleOrDefault(m => m.ID == id);
+            if (estudiante == null)
+            {
+                code = "0";
+                des = "Not";
+            }
+            else
+            {
+                context.Estudiante.Remove(estudiante);
+                context.SaveChanges();
+                code = "1";
+                des = "Delete";
+
+            }
+            identityError.Add(new IdentityError
+            {
+                Code = code,
+                Description = des
+            });
+            return identityError;
+
         }
 
     }

@@ -44,7 +44,11 @@ namespace SistemaAC.Controllers
             return estudiante.getEstudiante(id);
 
         }
-       
+        public List<IdentityError> deleteEstudiante(int id)
+        {
+            return estudiante.deleteEstudiante(id);
+        }
+
         // GET: Estudiantes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
