@@ -98,9 +98,7 @@
                         <div class="form-group">
                             <label for="Categoria" class="col-md-2">Categoria</label>
                             <div class="col-md-10">
-                                <select id='CategoriaCursos' class="form-control">
-                                
-                                </select>
+                                <select id='CategoriaCursos' class="form-control"></select>
                             </div>
                         </div>
                     </div>
@@ -127,6 +125,43 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="button" onclick="editarEstadoCurso1()" class="btn btn-primary">Aceptar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal de asignar curso-->
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <table class="table">
+
+                <tbody>
+                    <tr>
+                        <td>
+                            Curso:
+                        </td>
+                        <td> <h5 id="cursoTitle"></h5></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Docente:
+                        </td>
+                        <td> <select id='instructorsCursos' class="form-control"></select></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Fecha:
+                        </td>
+                        <td>
+                            <input type="datetime-local" for="Fecha" name="Fecha" placeholder="Fecha" style="width:210px" dirname="Fecha" class="form-control" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" onclick="instructorCurso()" class="btn btn-primary">Aceptar</button>
 
             </div>
         </div>

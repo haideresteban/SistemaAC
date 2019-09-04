@@ -32,7 +32,10 @@ namespace SistemaAC.ModelsClass
         }
         public List<Curso> getCursos(int id)
         {
-            return context.Curso.Where(c => c.CursoID == id).ToList();
+            List<Curso> lista = new List<Curso>();
+            lista= context.Curso.Where(c => c.CursoID == id).ToList();
+            return lista;
+            //return context.Curso.Where(c => c.CursoID == id).ToList();
         }
 
         public List<IdentityError> agregarCurso(int id, string nombre, string descripcion, byte creditos, byte horas, decimal costos, Boolean estado, int categoria, string funcion)
@@ -139,6 +142,7 @@ namespace SistemaAC.ModelsClass
                     "<td>" +
                     "<a data-toggle='modal' data-target='#modalCS' onclick='editarEstadoCurso(" + item.CursoID + ',' + 1 + ")' class='btn btn-success'>Edit</a>" +
                     "</td>" +
+                    "<td>" + getInstructorCurso(item.CursoID) + "</td>" +
                  "</tr>";
             }
             if (valor == "null")
@@ -212,6 +216,28 @@ namespace SistemaAC.ModelsClass
                 Description = des
             });
             return errorList;
+        }
+        private string getInstructorCurso(int cursoID)
+        {
+            string boton;
+            var data = context.Asignacion.Where(c => c.CursoID == cursoID).ToList();
+            if (0 < data.Count)
+            {
+                boton = "<a data-toggle='modal' data-target='.bs-example-modal-sm' onclick='getInstructorCurso(" + data[0].AsignacionID + ',' + cursoID + ',' + data[0].InstructorID + ',' + 2 + ")'  class='btn btn-info'>Actualizar</a>";
+            }
+            else
+            {
+                boton = "<a data-toggle='modal' data-target='.bs-example-modal-sm' onclick='getInstructorCurso(" + 0 + ',' + cursoID + ',' + 0 + ',' + 3 + ")'  class='btn btn-info'>Asignar</a>";
+            }
+            return boton;
+
+        }
+
+        internal List<Instructor> getInstructors()
+        {
+            List<Instructor> lista = new List<Instructor>();
+            lista = context.Instructor.Where(c => c.Estado == true).ToList();
+            return lista;
         }
     }
 }

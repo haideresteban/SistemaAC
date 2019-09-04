@@ -1,19 +1,17 @@
-﻿var idEstudiante = 0;
-class Estudiantes {
-    constructor() {
+﻿var idInstructor = 0;
+class Instructor {
+    constructor() { }
 
-    }
-    /*
-     ...data representa un arreglo, captura todos los parametros que le pasemos, no importa cuantos sean 
-     */
-    guardarEstudiante(id, funcion, ...data) {
+
+    guardarInstructor(id, funcion, ...data) {
         var action = data[0];
         var response = new Array({
-            apellidos: data[3], codigo: data[1], direccion: data[8], documento: data[5], email: data[6], estado: data[9], fechaNacimiento: data[4], nombres: data[2], id: id, telefono: data[7]
+            apellidos: data[3], especialidad: data[1], direccion: data[8], documento: data[5], email: data[6], estado: data[9],
+            fechaNacimiento: data[4], nombres: data[2], id: id, telefono: data[7]
         });
-        //  alert(action);
+        //console.log(response);
         if (data[1] === "") {
-            document.getElementById("Codigo").focus();
+            document.getElementById("Especialidad").focus();
         } else {
             if (data[2] === "") {
                 document.getElementById("Nombre").focus();
@@ -36,11 +34,10 @@ class Estudiantes {
                                     if (data[8] === "") {
                                         document.getElementById("Direccion").focus();
                                     } else {
-                                        $.post(
-                                            action,
+                                        $.post(action,
                                             { response, funcion },
                                             (response) => {
-                                                if ("1" === response[0].code) {
+                                                if (response[0].code === "1") {
                                                     this.restablecer();
                                                 } else {
                                                     document.getElementById("mensaje").innerHTML = "No se pudo guardar el estudiante";
@@ -54,33 +51,27 @@ class Estudiantes {
                 }
             }
         }
-
     }
-    filtarEstudiantes(numPagina, valor, order, action) {
-        /*
-         operador terniario que nos permite validar si valor= vacio entonces valor =null sino valor
-         */
+    filtarInstructores(numPagina, valor, order, action) {
         valor = (valor === "") ? "null" : valor;
-        $.post(
-            action,
+        $.post(action,
             { valor, numPagina, order },
             (response) => {
                 console.log(response);
                 $("#resultSearch").html(response[0][0]);
                 $("#paginado").html(response[0][1]);
             });
-
     }
 
-    getEstudiante(id, funcion, action) {
-        // alert(id + " " + funcion + " " + action);
+    getInstructor(id, funcion, action) {
         $.post(
-            action,
-            { id }, (response) => {
+            action, { id },
+            (response) => {
                 console.log(response);
+                //
                 if (funcion === 1) {
-                    idEstudiante = response[0].id;
-                    document.getElementById("Codigo").value = response[0].codigo;
+                    idInstructor = response[0].id;
+                    document.getElementById("Especialidad").value = response[0].especialidad;
                     document.getElementById("Nombre").value = response[0].nombres;
                     document.getElementById("Apellidos").value = response[0].apellidos;
                     document.getElementById("FechaNacimiento").value = response[0].fechaNacimiento;
@@ -90,12 +81,12 @@ class Estudiantes {
                     document.getElementById("Direccion").value = response[0].direccion;
                     document.getElementById("Estado").checked = response[0].estado;
                 }
-                var action = 'Estudiantes/guardarEstudiante';
-                this.editarEstudiante(response, funcion, action)
+                var action = 'Instructores/guardarInstructor';
+                this.editarInstructor(response, funcion, action);
             });
-    }
 
-    editarEstudiante(response, funcion, action) {
+    }
+    editarInstructor(response, funcion, action) {
         $.post(
             action,
             { response, funcion },
@@ -106,7 +97,9 @@ class Estudiantes {
                 console.log(response);
             });
     }
-    deleteEstudiantes(id, action) {
+
+    deleteInstructor(id, action) {
+
         $.post(
             action,
             { id },
@@ -115,8 +108,9 @@ class Estudiantes {
                 this.restablecer();
             });
     }
+
     restablecer() {
-        document.getElementById("Codigo").value = "";
+        document.getElementById("Especialidad").value = "";
         document.getElementById("Nombre").value = "";
         document.getElementById("Apellidos").value = "";
         document.getElementById("FechaNacimiento").value = "";
@@ -126,12 +120,9 @@ class Estudiantes {
         document.getElementById("Direccion").value = "";
         document.getElementById("Estado").value = "";
         document.getElementById("Direccion").value = "";
-        filtarEstudiantes(1, "nombre");
+        filtrarInstructores(1, "nombre");
         $('#modalAS').modal('hide');
-        $('#modalDeleteAS').modal('hide');
-
     }
-
 
 
 }

@@ -150,8 +150,38 @@ class Cursos {
                     }
 
                 }
+                if (funcion === 2 || funcion === 3) {
+                    document.getElementById("cursoTitle").innerHTML = response[0].nombre; 
+                }
             }
         });
+    }
+
+
+    getInstructors(instructor, fun, action) {
+        var count = 1;
+        $.post(
+            action,
+            {},
+            (response) => {
+                document.getElementById('instructorsCursos').options[0] = new Option("Seleccione un instructor", 0);
+                if (0 < response.length) {
+                    //document.getElementById('instructorsCursos').options[count] = new ("value", "1");
+                    for (var i = 0; i < response.length; i++) {
+                        if (fun === 3) {
+                            document.getElementById('instructorsCursos').options[count] = new Option("-"+response[i].nombres+"-", response[i].id); 
+                            count++;
+                        } else {
+                            if (instructor === response[i].id) {
+                                document.getElementById('instructorsCursos').options[0] = new Option(response[i].nombres, response[i].id);
+                                document.getElementById('instructorsCursos').selectedIndex = 0;
+
+
+                            }
+                        }
+                    }
+                }
+            });
     }
     editarEstadoCurso(id, funcion) {
         var nombre, descripcion, creditos, horas, costo, estado, categoria;

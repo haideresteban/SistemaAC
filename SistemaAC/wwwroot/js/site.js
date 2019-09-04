@@ -188,6 +188,9 @@ $().ready(() => {
         case "/Estudiantes":
             filtarEstudiantes(1, "nombre");
             break;
+        case "/Instructores":
+            filtrarInstructores(1, "nombre");
+            break;
     }
 
 });
@@ -202,7 +205,8 @@ $('#modalAS').on('shown.bs.modal', () => {
  CODIGO DE CATEGORIAS
  */
 var idCategoria, funcion = 0, idCurso;
-var idEstudiante = 0;
+var idEstudiante = 0, asignacionID=0;
+var idInstructor = 0;
 
 var agregarCategoria = () => {
     var nombre = document.getElementById("Nombre").value;
@@ -296,6 +300,17 @@ var restablecer = () => {
     cursos.restablecer();
 
 };
+
+
+var getInstructorCurso = (asignacion, curso, instructor, fun) => {
+    idCurso = curso;
+    asignacionID = asignacion;
+    var action = 'Cursos/getCursos';
+    var cursos = new Cursos("", "", "", "", "", "", "", action);
+    cursos.getCursos(curso, fun);
+    action = 'Cursos/getInstructors';
+    cursos.getInstructors(instructor, fun, action);
+};
 /**            
  CODIGO ESTUDIANTES            
  */
@@ -340,4 +355,45 @@ var deleteEstudiantes = () => {
 var restablecerEstudiantes = () => {
     estudiante.restablecer();
 
-}
+};
+//CODIGO DE INSTRUCTOR
+var instructor = new Instructor();
+
+var AgregarInstructor = () => {
+    var action = 'Instructores/guardarInstructor';
+    var especialidad = document.getElementById("Especialidad").value;
+    var nombre = document.getElementById("Nombre").value;
+    var apellido = document.getElementById("Apellidos").value;
+    var fecha = document.getElementById("FechaNacimiento").value;
+    var documento = document.getElementById("Documento").value;
+    var email = document.getElementById("Email").value;
+    var telefono = document.getElementById("Telefono").value;
+    var direccion = document.getElementById("Direccion").value;
+    var estado = document.getElementById("Estado").checked;
+    instructor.guardarInstructor(idInstructor, funcion, action, especialidad, nombre, apellido, fecha, documento, email, telefono, direccion, estado);
+    idInstructor = 0;
+};
+var filtrarInstructores = (numPagina, order) => {
+    var valor = document.getElementById("filtrar").value;
+    var action = 'Instructores/filtrarInstructores';
+    instructor.filtarInstructores(numPagina, valor, order, action);
+};
+var editarInstructor = (id, fun) => {
+    idEstudiante = id;
+    funcion = fun;
+    var action = 'Instructores/getInstructor';
+    instructor.getInstructor(id, funcion, action);
+};
+var deleteInstructor = (id) => {
+    idInstructor = id;
+};
+
+var deleteInstructores = () => {
+    var action = 'Instructores/deleteInstructor';
+    instructor.deleteInstructor(idInstructor, action);
+    idInstructor = 0;
+
+};
+var restablecerInstructor = () => {
+    instructor.restablecer();
+};

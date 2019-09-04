@@ -1,4 +1,4 @@
-﻿@model SistemaAC.Models.Estudiante
+﻿@model SistemaAC.Models.Instructor
 
 @{
     ViewData["Title"] = "Details";
@@ -7,14 +7,14 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Estudiante</h4>
+    <h4>Instructor</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Codigo)
+            @Html.DisplayNameFor(model => model.especialidad)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Codigo)
+            @Html.DisplayFor(model => model.especialidad)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Apellidos)

@@ -40,6 +40,8 @@ namespace SistemaAC.Controllers
         }
 
 
+
+
         public List<object[]> filtrarCurso(int numPagina, string valor, string order)
         {
             return cursoModels.filtrarCurso(numPagina, valor, order);
@@ -52,6 +54,14 @@ namespace SistemaAC.Controllers
         public List<IdentityError> editarCurso(int id, string nombre, string descripcion, byte creditos, byte horas, decimal costo, Boolean estado, int categoria, int funcion)
         {
             return cursoModels.editarCurso(id, nombre, descripcion, creditos, horas, costo, estado, categoria, funcion);
+        }
+
+        public List<Instructor> getInstructors()
+        {
+            List<Instructor> lista = new List<Instructor>();
+            lista = cursoModels.getInstructors();
+            //return cursoModels.getInstructors();
+            return lista;
         }
 
     }
