@@ -33,7 +33,7 @@ namespace SistemaAC.ModelsClass
         public List<Curso> getCursos(int id)
         {
             List<Curso> lista = new List<Curso>();
-            lista= context.Curso.Where(c => c.CursoID == id).ToList();
+            lista = context.Curso.Where(c => c.CursoID == id).ToList();
             return lista;
             //return context.Curso.Where(c => c.CursoID == id).ToList();
         }
@@ -72,7 +72,7 @@ namespace SistemaAC.ModelsClass
         }
         public List<object[]> filtrarCurso(int numPagina, string valor, string order)
         {
-            int cant, numRegistros = 0, inicio = 0, reg_por_pagina = 1;
+            int cant, numRegistros = 0, inicio = 0, reg_por_pagina = 5;
             int can_paginas, pagina;
             string dataFilter = "", paginador = "", Estado = null;
             List<object[]> data = new List<object[]>();
@@ -169,6 +169,8 @@ namespace SistemaAC.ModelsClass
             return data;
         }
 
+
+
         public List<IdentityError> editarCurso(int id, string nombre, string descripcion, byte creditos, byte horas, decimal costo, Boolean estado, int categoriaID, int funcion)
         {
             switch (funcion)
@@ -238,6 +240,36 @@ namespace SistemaAC.ModelsClass
             List<Instructor> lista = new List<Instructor>();
             lista = context.Instructor.Where(c => c.Estado == true).ToList();
             return lista;
+        }
+
+        internal List<IdentityError> instructorCurso(List<Asignacion> asig)
+        {
+            //asignar instructor a lños cursos
+            var asignacion = new Asignacion
+            {
+                AsignacionID = asig[0].AsignacionID,
+                CursoID = asig[0].CursoID,
+                InstructorID = asig[0].InstructorID,
+                Fecha = asig[0].Fecha,
+            };
+            try
+            {
+                context.Update(asignacion);
+                context.SaveChanges();
+                code = "Save";
+                des = "Save";
+            }
+            catch (Exception ex)
+            {
+                code = "error";
+                des = ex.Message;
+            }
+            errorList.Add(new IdentityError
+            {
+                Code = code,
+                Description = des
+            });
+            return errorList;
         }
     }
 }

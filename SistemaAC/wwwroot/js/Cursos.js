@@ -151,7 +151,7 @@ class Cursos {
 
                 }
                 if (funcion === 2 || funcion === 3) {
-                    document.getElementById("cursoTitle").innerHTML = response[0].nombre; 
+                    document.getElementById("cursoTitle").innerHTML = response[0].nombre;
                 }
             }
         });
@@ -166,17 +166,17 @@ class Cursos {
             (response) => {
                 document.getElementById('instructorsCursos').options[0] = new Option("Seleccione un instructor", 0);
                 if (0 < response.length) {
-                    //document.getElementById('instructorsCursos').options[count] = new ("value", "1");
                     for (var i = 0; i < response.length; i++) {
                         if (fun === 3) {
-                            document.getElementById('instructorsCursos').options[count] = new Option("-"+response[i].nombres+"-", response[i].id); 
+                            document.getElementById('instructorsCursos').options[count] = new Option("-" + response[i].nombres + "-", response[i].id);
                             count++;
                         } else {
                             if (instructor === response[i].id) {
                                 document.getElementById('instructorsCursos').options[0] = new Option(response[i].nombres, response[i].id);
                                 document.getElementById('instructorsCursos').selectedIndex = 0;
-
-
+                            } else {
+                                document.getElementById('instructorsCursos').options[count] = new Option(response[i].nombres, response[i].id);
+                                count++;
                             }
                         }
                     }
@@ -212,7 +212,26 @@ class Cursos {
 
         });
     }
-
+    instructorCurso(asignacionID, idCurso, instructorID, fecha, action) {
+        //guarda la asignaciond e un instructor a un curso 
+        var asignacion = new Array({
+            asignacionID: asignacionID,
+            cursoID: idCurso,
+            instructorID: instructorID,
+            fecha: fecha
+        });
+        $.post(
+            action,
+            { asignacion },
+            (response) => {
+                console.log(response);
+                if (response[0].code === "Save") {
+                    this.restablecer();
+                } else {
+                    document.getElementById("cursoTitle").innerHTML = response[0].descripcion;
+                }
+            });
+    }
     restablecer() {
         document.getElementById("Nombre").value = "";
         document.getElementById("Descripcion").value = "";
@@ -227,6 +246,6 @@ class Cursos {
         filtrarCurso(1, "nombre");
         $('#modalCS').modal('hide');
         $('#ModalEstadoCurso').modal('hide');
-
+        $('.bs-example-modal-sm').modal('hide');
     }
 }
