@@ -26,7 +26,6 @@ class Inscripciones {
 
                 document.getElementById("Estudiante").value = response[0].apellidos + " " + response[0].nombres;
                 this.restablecer();
-
             });
 
     }
